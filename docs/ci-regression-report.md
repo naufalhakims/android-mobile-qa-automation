@@ -18,4 +18,4 @@ Run the full regression suite with `mvn test`. Maven writes machine-readable XML
 
 ## Current status
 
-Workflow configuration is present, but it has not yet been exercised by a hosted GitHub Actions run. The most recent local consolidated negative run failed during UiAutomator2 session startup; the prior full-suite attempt also hit a local memory/pagefile allocation failure. See [QA Test Report](qa-test-report.md) and [Negative Testing Report](negative-testing-report.md) for test-level outcomes and limitations.
+The first hosted attempt reached the emulator action but stopped before Appium setup: its script is executed by `/usr/bin/sh`, which rejected Bash-only `pipefail` syntax. The workflow script now uses POSIX-compatible `set -eu`, test brackets, and exit trap syntax. A rerun is still needed to validate the Android/Appium/test steps. The most recent local consolidated negative run failed during UiAutomator2 session startup; the prior full-suite attempt also hit a local memory/pagefile allocation failure. See [QA Test Report](qa-test-report.md) and [Negative Testing Report](negative-testing-report.md) for test-level outcomes and limitations.
