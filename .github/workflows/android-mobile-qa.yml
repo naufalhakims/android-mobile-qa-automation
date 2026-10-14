@@ -42,31 +42,18 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_2
+          disable-animations: false
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          script: |
-            # The emulator action runs this block with /usr/bin/sh (POSIX shell).
-            set -eu
-            mkdir -p target
-            appium_pid=""
-            cleanup() {
-              if [ -n "$appium_pid" ]; then
-                kill "$appium_pid" 2>/dev/null || true
-              fi
-            }
-            trap cleanup 0
-            npm install --global --prefix "$RUNNER_TEMP/appium" appium@3.8.0
-            export PATH="$RUNNER_TEMP/appium/bin:$PATH"
-            appium driver install uiautomator2
-            adb install apps/Android-MyDemoAppRN.1.0.0.build-130.apk
+          script: >-
+            set -eu;
+            mkdir -p target;
+            npm install --global --prefix "$RUNNER_TEMP/appium" appium@3.8.0;
+            export PATH="$RUNNER_TEMP/appium/bin:$PATH";
+            appium driver install uiautomator2;
+            adb install apps/Android-MyDemoAppRN.1.0.0.build-130.apk;
             appium --base-path / --log target/appium.log > target/appium-server.log 2>&1 &
-            appium_pid=$!
-            for attempt in $(seq 1 30); do
-              if curl --fail --silent http://127.0.0.1:4723/status; then
-                break
-              fi
-              sleep 2
-            done
-            curl --fail --silent http://127.0.0.1:4723/status
+            for attempt in $(seq 1 30); do if curl --fail --silent http://127.0.0.1:4723/status; then break; fi; sleep 2; done;
+            curl --fail --silent http://127.0.0.1:4723/status;
             mvn --batch-mode --no-transfer-progress test
 
       - name: Upload test reports and failure screenshots
