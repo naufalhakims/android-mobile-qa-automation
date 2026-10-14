@@ -6,9 +6,12 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import base.FailureArtifactExtension;
 
 import java.net.URL;
 
+@ExtendWith(FailureArtifactExtension.class)
 class InspectHomeScreenTest {
 
     private AndroidDriver driver;

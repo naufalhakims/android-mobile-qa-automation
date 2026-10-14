@@ -30,6 +30,8 @@ The current test suite covers the following scenarios:
 | `ProductListTest`       | Verifies the product listing and checks product names and prices.                                                                            |
 | `ProductDetailTest`     | Verifies the selected product's name and price on the detail screen.                                                                         |
 | `ShoppingCartE2ETest`   | Tests the shopping flow by opening a product, verifying its details, adding it to the cart, and validating the cart badge and cart contents. |
+| `CheckoutE2ETest`       | Runs from the product screen through cart, demo-user login, shipping and payment forms, and verifies the order confirmation. |
+| `CheckoutNegativeTest`  | Verifies the app-listed locked-out login error and the validation messages actually shown for empty shipping and payment forms. |
 
 The end-to-end scenario uses the **Sauce Labs Backpack** product.
 
@@ -45,13 +47,26 @@ android-mobile-qa-automation/
 │           ├── pages/
 │           │   ├── ProductPage.java
 │           │   ├── ProductDetailPage.java
-│           │   └── CartPage.java
+│           │   ├── CartPage.java
+│           │   ├── LoginPage.java
+│           │   ├── CheckoutPage.java
+│           │   ├── PaymentPage.java
+│           │   └── OrderReviewPage.java
 │           └── tests/
 │               ├── AppLaunchTest.java
 │               ├── InspectHomeScreenTest.java
 │               ├── ProductListTest.java
 │               ├── ProductDetailTest.java
-│               └── ShoppingCartE2ETest.java
+│               ├── ShoppingCartE2ETest.java
+│               ├── CheckoutE2ETest.java
+│               └── CheckoutNegativeTest.java
+├── docs/
+│   ├── qa-test-report.md
+│   ├── negative-testing-report.md
+│   └── ci-regression-report.md
+├── .github/
+│   └── workflows/
+│       └── android-mobile-qa.yml
 ├── pom.xml
 ├── .gitignore
 └── README.md
@@ -164,6 +179,18 @@ Run the end-to-end shopping cart test:
 mvn -Dtest=ShoppingCartE2ETest test
 ```
 
+Run the checkout flow through order confirmation:
+
+```powershell
+mvn -Dtest=CheckoutE2ETest test
+```
+
+Run checkout negative tests:
+
+```powershell
+mvn -Dtest=CheckoutNegativeTest test
+```
+
 Run the product listing test:
 
 ```powershell
@@ -186,6 +213,20 @@ Detailed test reports are generated under:
 target/surefire-reports/
 ```
 
+When a test method fails while its Appium session is available, the framework saves a screenshot, UI hierarchy XML, and failure message under:
+
+```text
+target/failure-artifacts/
+```
+
+The GitHub Actions regression workflow runs on pushes, pull requests, and manual dispatch. It starts an Android API 30 emulator, installs the APK from `apps/`, runs the full Maven test suite, and uploads Surefire reports, Appium logs, and failure artifacts. See [`.github/workflows/android-mobile-qa.yml`](.github/workflows/android-mobile-qa.yml). The workflow is configured but has not yet had a hosted run.
+
+QA reports are maintained in `docs/`:
+
+* `docs/qa-test-report.md` — latest local regression execution summary.
+* `docs/negative-testing-report.md` — negative scenarios and observed app validation messages.
+* `docs/ci-regression-report.md` — CI workflow, triggers, and uploaded artifacts.
+
 ## Framework Design
 
 ### BaseTest
@@ -199,6 +240,9 @@ Page classes separate UI locators and page interactions from test logic.
 * `ProductPage` handles product listing interactions.
 * `ProductDetailPage` handles product detail verification and adding a product to the cart.
 * `CartPage` handles cart navigation and cart-related verification.
+* `LoginPage`, `CheckoutPage`, `PaymentPage`, and `OrderReviewPage` handle the checkout flow and order confirmation.
+
+`FailureArtifactExtension` captures screenshots and UI hierarchy data when a test method fails.
 
 This separation improves readability and makes UI locator maintenance easier.
 
@@ -208,26 +252,20 @@ The framework uses Selenium explicit waits to allow application screens and elem
 
 ## Current End-to-End Scenario
 
-The shopping cart E2E test follows this sequence:
+The checkout E2E test follows this sequence:
 
 1. Verify that the product listing screen is displayed.
-2. Open Sauce Labs Backpack.
-3. Verify the product name and price.
-4. Add the product to the cart.
-5. Verify that the cart badge displays the expected count.
-6. Open the cart screen.
-7. Verify that the cart screen, product, and price are displayed.
+2. Open Sauce Labs Backpack and verify its details.
+3. Add it to the cart and open the cart screen.
+4. Proceed to checkout and sign in with the standard demo user.
+5. Fill the shipping and test payment forms, review the order, then verify the order confirmation.
 
 ## Limitations and Future Improvements
 
 Potential next improvements include:
 
 * Add quantity update and item removal test cases.
-* Extend checkout validation and negative test scenarios.
-* Add screenshot capture when a test fails.
 * Improve locator resilience and test data management.
-* Add automated test execution through GitHub Actions.
-* Improve reporting and test result documentation.
 * Expand coverage to additional products and application workflows.
 
 ## Notes
