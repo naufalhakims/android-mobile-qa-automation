@@ -209,6 +209,53 @@ Detailed test reports are generated under:
 target/surefire-reports/
 ```
 
+### Proof of Work
+
+The latest local Surefire reports show the app launch and complete checkout flow passing on the Android emulator:
+
+```text
+Test set: tests.AppLaunchTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+Test set: tests.CheckoutE2ETest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+```
+
+Additional recorded passing test classes include `CheckoutNegativeTest`, `ShoppingCartE2ETest`, `ProductListTest`, and `ProductDetailTest`. These results are available as Maven Surefire XML and text reports under `target/surefire-reports/`; the entries shown above were captured from the latest local run. The reports are generated output and are not checked into the repository.
+
+### App Screenshots
+
+Screenshots captured from the Android app show the automated shopping flow from product browsing through checkout confirmation. Select an image to view it at full size.
+
+<table>
+  <tr>
+    <td align="center"><a href="docs/img/img.png"><img src="docs/img/img.png" width="190" alt="Product catalog screen" /></a></td>
+    <td align="center"><a href="docs/img/img_1.png"><img src="docs/img/img_1.png" width="190" alt="Sauce Labs Backpack product detail" /></a></td>
+    <td align="center"><a href="docs/img/img_2.png"><img src="docs/img/img_2.png" width="190" alt="Shopping cart with Backpack" /></a></td>
+  </tr>
+  <tr>
+    <td align="center">Product catalog</td>
+    <td align="center">Product details</td>
+    <td align="center">Shopping cart</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="docs/img/img_3.png"><img src="docs/img/img_3.png" width="190" alt="Demo app login screen" /></a></td>
+    <td align="center"><a href="docs/img/img_4.png"><img src="docs/img/img_4.png" width="190" alt="Checkout shipping address form" /></a></td>
+    <td align="center"><a href="docs/img/img_5.png"><img src="docs/img/img_5.png" width="190" alt="Order review screen" /></a></td>
+  </tr>
+  <tr>
+    <td align="center">Demo login</td>
+    <td align="center">Shipping details</td>
+    <td align="center">Order review</td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><a href="docs/img/img_6.png"><img src="docs/img/img_6.png" width="220" alt="Checkout complete confirmation screen" /></a></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center">Successful checkout confirmation</td>
+  </tr>
+</table>
+
 When a test method fails while its Appium session is available, the framework saves a screenshot, UI hierarchy XML, and failure message under:
 
 ```text
@@ -262,9 +309,3 @@ Potential next improvements include:
 * Add quantity update and item removal test cases.
 * Improve locator resilience and test data management.
 * Expand coverage to additional products and application workflows.
-
-## Notes
-
-This is a personal learning and portfolio project focused on Android mobile UI automation and software quality assurance practices.
-
-The test suite currently covers selected product browsing and shopping cart scenarios. It does not represent exhaustive validation of the entire application.
