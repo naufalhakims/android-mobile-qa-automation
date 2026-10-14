@@ -62,11 +62,7 @@ android-mobile-qa-automation/
 │               └── CheckoutNegativeTest.java
 ├── docs/
 │   ├── qa-test-report.md
-│   ├── negative-testing-report.md
-│   └── ci-regression-report.md
-├── .github/
-│   └── workflows/
-│       └── android-mobile-qa.yml
+│   └── negative-testing-report.md
 ├── pom.xml
 ├── .gitignore
 └── README.md
@@ -219,13 +215,12 @@ When a test method fails while its Appium session is available, the framework sa
 target/failure-artifacts/
 ```
 
-The GitHub Actions regression workflow runs on pushes, pull requests, and manual dispatch. It starts an Android API 30 emulator, installs the APK from `apps/`, runs the full Maven test suite, and uploads Surefire reports, Appium logs, and failure artifacts. See [`.github/workflows/android-mobile-qa.yml`](.github/workflows/android-mobile-qa.yml). The workflow is configured but has not yet had a hosted run.
+This is a local mobile automation project. Start an Android emulator and Appium server, then run the Maven tests from your development environment. Test reports and failure artifacts are saved locally under `target/`.
 
 QA reports are maintained in `docs/`:
 
 * `docs/qa-test-report.md` — latest local regression execution summary.
 * `docs/negative-testing-report.md` — negative scenarios and observed app validation messages.
-* `docs/ci-regression-report.md` — CI workflow, triggers, and uploaded artifacts.
 
 ## Framework Design
 
